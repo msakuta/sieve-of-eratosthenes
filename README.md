@@ -22,7 +22,7 @@ go build sieve.go
 
 ### Running
 
-Both `sieve.go` and `sieve.py` find the first 10,000 primes. To run each individually (assuming you've followed the installation steps above) run:
+Both `sieve.go` and `sieve.py` find the primes below 10,000. To run each individually (assuming you've followed the installation steps above) run:
 
 ```
 # Go
