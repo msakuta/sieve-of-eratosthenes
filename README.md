@@ -17,18 +17,18 @@ Showing you how to install Python or Go is out of scope of this project - you ca
 git clone https://github.com/8F3E/sieve-of-eratosthenes.git
 cd sieve-of-eratosthenes
 # Build the go executable
-go build sieve.go
+go build -o bin/sieve sieve.go
 ```
 
 ### Running
 
-Both `sieve.go` and `sieve.py` find the primes below 10,000. To run each individually (assuming you've followed the installation steps above) run:
+Both `sieve.go` and `sieve.py` find the primes below n where n is the first command line argument. To run each individually (assuming you've followed the installation steps above) run:
 
 ```
 # Go
-./sieve
+bin/sieve [n]
 # Python
-python3 sieve.py
+python3 sieve.py [n]
 ```
 
 In the [testing](testing) folder there is a jupyter notebook and a csv of data. These allow you to reproduce the tests conducted to demonstrate Go's speed (and have some pretty graphs).
