@@ -8,7 +8,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-Showing you how to install Python or Go is out of scope of this project - you can find some great tutorials on their respective websites. The standard library of both languages should suffice.
+Showing you how to install Python or Go is out of scope of this project - you can find some great tutorials on their respective websites. The standard library of both languages should suffice. Note to run the tests in the jupyter notebook you will need jupyter, pandas and plotly installed.
 
 ### Installing
 
