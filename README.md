@@ -1,6 +1,6 @@
 # How Fast is Golang? | Sieve of Eratosthenes
 
-This repository houses some code used to demonstrate the speed improvement of Golang over Python, as featured in a Medium article.
+This repository houses some code used to demonstrate the speed improvement of Golang over Python, as featured in [this Medium article](https://medium.com/@8F3E/how-fast-is-golang-135c658205eb).
 
 ## Getting Started
 
