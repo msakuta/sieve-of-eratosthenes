@@ -10,7 +10,7 @@ IMPLEMENTATIONS = [
 ]
 
 MIN = int(os.getenv("MIN", 10000))
-MAX = int(os.getenv("MAX", 500000))
+MAX = int(os.getenv("MAX", 1000000))
 
 def x_axis():
     min_exp = int(math.log10(MIN))
