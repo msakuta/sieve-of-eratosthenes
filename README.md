@@ -1,6 +1,6 @@
 # How Fast is Golang? | Sieve of Eratosthenes
 
-This repository houses some code used to demonstrate the speed improvement of Golang over Python, as featured in [this Medium article](https://medium.com/@8F3E/how-fast-is-golang-135c658205eb).
+This repository houses some code used to demonstrate the speed improvement of Rust over Golang, as featured in [this Medium article](https://medium.com/@alistairisrael/how-fast-is-rust-655f6dd90ff8).
 
 ## Getting Started
 
@@ -14,7 +14,7 @@ Showing you how to install Python or Go is out of scope of this project - you ca
 
 ```
 # Clone this repository
-git clone https://github.com/8F3E/sieve-of-eratosthenes.git
+git clone https://github.com/aisrael/sieve-of-eratosthenes.git
 cd sieve-of-eratosthenes
 # Build the go executable
 go build -o bin/sieve sieve.go
