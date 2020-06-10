@@ -26,8 +26,13 @@ def x_axis():
 
 def to_float_seconds(s):
     if ":" in s:
-        [mins, secs] = s.split(':')
-        return int(mins) * 60 + float(secs)
+        parts = s.split(':')
+        if len(parts) == 2:
+            [mins, secs] = parts
+            return int(mins) * 60 + float(secs)
+        else:
+            [hours, mins, secs] = parts
+            return int(hours) * 3600 + int(mins) * 60 + float(secs)
     else:
         return float(s)
 
