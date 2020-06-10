@@ -21,29 +21,27 @@ fn main() {
         primes.push(i);
     }
 
-    {
-        let mut i = 0;
-        while i < primes.len() {
-            let factor = primes[i];
+    for i in 0..primes.len() {
+        let factor = primes[i];
+        if factor != 0 {
             sieve(&mut primes, factor);
-            i += 1;
         }
     }
 
     for i in 0..primes.len() {
-        println!("{}", primes[i])
+        if primes[i] != 0 {
+            println!("{}", primes[i])
+        }
     }
 }
 
 fn sieve(primes: &mut Vec<i32>, factor: i32) {
-    let mut i = 0;
-    while i < primes.len() {
+    for i in 0..primes.len() {
         let value = primes[i];
-        if value != factor {
+        if value != 0 && value != factor {
             if value % factor == 0 {
-                primes.remove(i);
+                primes[i] = 0;
             }
         }
-        i += 1;
     }
 }
