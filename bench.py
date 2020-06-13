@@ -22,7 +22,8 @@ def x_axis():
             x = i * pow
             if x > MIN and x < MAX:
                 yield x
-    yield MAX
+    if MAX > MIN:
+        yield MAX
 
 def to_float_seconds(s):
     if ":" in s:
