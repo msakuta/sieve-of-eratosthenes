@@ -14,6 +14,7 @@ func main() {
 	}
 
 	smart := false
+	quiet := false
 	n := 0
 
 	for i := 1; i < len(os.Args); i++ {
@@ -21,7 +22,11 @@ func main() {
 			smart = true
 			continue
 		}
-		nTemp, err := strconv.Atoi(os.Args[1])
+		if os.Args[i] == "-q" {
+			quiet = true
+			continue
+		}
+		nTemp, err := strconv.Atoi(os.Args[i])
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(2)
@@ -35,13 +40,13 @@ func main() {
 	}
 
 	if smart {
-		smart_primes(n)
+		smart_primes(n, quiet)
 	} else {
-		dumb_primes(n)
+		dumb_primes(n, quiet)
 	}
 }
 
-func dumb_primes(n int) {
+func dumb_primes(n int, quiet bool) {
 	var primes []int
 
 	for i := 2; i <= n; i++ {
@@ -56,12 +61,14 @@ func dumb_primes(n int) {
 
 	for i := 0; i < len(primes); i++ {
 		if primes[i] != 0 {
-			fmt.Println(primes[i])
+			if !quiet {
+				fmt.Println(primes[i])
+			}
 		}
 	}
 }
 
-func smart_primes(n int) {
+func smart_primes(n int, quiet bool) {
 	primes := make([]bool, 0, n)
 
 	for i := 0; i <= n; i++ {
@@ -72,15 +79,17 @@ func smart_primes(n int) {
 		if primes[factor] {
 			var multiple = 2
 			for factor * multiple < n {
-				primes[factor * multiple] = false;
-				multiple += 1;
+				primes[factor * multiple] = false
+				multiple += 1
 			}
 		}
 	}
 
 	for i := 0; i < len(primes); i++ {
 		if primes[i] {
-			fmt.Println(i)
+			if !quiet {
+				fmt.Println(i)
+			}
 		}
 	}
 }

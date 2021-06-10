@@ -4,16 +4,18 @@ import os
 import subprocess
 import time
 
+extension = ".exe" if os.name == "nt" else ""
+
 IMPLEMENTATIONS = [
     # "python sieve.py",
-    ["bin\\sieve.exe"],
-    ["bin\\sieve.exe", "-s"],
-    ["bin\\sieve-rs.exe", "-q"],
-    ["bin\\sieve-rs.exe", "-s", "-q"],
+    ["bin\\sieve" + extension, "-q"],
+    ["bin\\sieve" + extension, "-s", "-q"],
+    ["bin\\sieve-rs" + extension, "-q"],
+    ["bin\\sieve-rs" + extension, "-s", "-q"],
 ]
 
 MIN = int(os.getenv("MIN", 10000))
-MAX = int(os.getenv("MAX", 400000))
+MAX = int(os.getenv("MAX", 1000000))
 
 def x_axis():
     min_exp = int(math.log10(MIN))
@@ -79,6 +81,11 @@ def main():
         writer.writerow(["n", "Go dumb", "Go smart", "Rust dumb", "Rust smart"])
         for row in data:
             writer.writerow(row)
+    with open('testing/timing_data_smart.csv', mode='w') as csv_file:
+        writer = csv.writer(csv_file, delimiter=',')
+        writer.writerow(["n", "Go smart", "Rust smart"])
+        for row in data:
+            writer.writerow([num for i, num in enumerate(row) if i == 0 or "-s" in IMPLEMENTATIONS[i - 1]])
 
 if __name__ == "__main__":
     main()
