@@ -2,15 +2,18 @@ import csv
 import math
 import os
 import subprocess
+import time
 
 IMPLEMENTATIONS = [
     # "python sieve.py",
-    "bin/sieve",
-    "bin/sieve-rs"
+    ["bin\\sieve.exe"],
+    ["bin\\sieve.exe", "-s"],
+    ["bin\\sieve-rs.exe", "-q"],
+    ["bin\\sieve-rs.exe", "-s", "-q"],
 ]
 
 MIN = int(os.getenv("MIN", 10000))
-MAX = int(os.getenv("MAX", 1000000))
+MAX = int(os.getenv("MAX", 400000))
 
 def x_axis():
     min_exp = int(math.log10(MIN))
@@ -38,26 +41,29 @@ def to_float_seconds(s):
         return float(s)
 
 def run(cmd):
-    print(cmd)
+    # print(cmd)
+    start = time.time()
     result = subprocess.run(
-        [f"time {cmd}"],
-        shell=True,
-        executable="/bin/zsh",
+        cmd,
+        # shell=True,
+        # executable="bin/sieve-rs.exe",
         stdout=subprocess.DEVNULL,
         stderr=subprocess.PIPE
     )
-    stderr = result.stderr.decode()
-    output = stderr[len(cmd):]
-    a = output.split()
-    user = to_float_seconds(a[0][:-1])
-    system = to_float_seconds(a[2][:-1])
-    cpu = int(a[4][:-1])
-    total = to_float_seconds(a[6])
-    print(user, system, cpu, total)
-    return user
+    total = time.time() - start
+    # stderr = result.stderr.decode()
+    # output = stderr[len(cmd):]
+    # a = output.split()
+    # user = to_float_seconds(a[0][:-1])
+    # system = to_float_seconds(a[2][:-1])
+    # cpu = int(a[4][:-1])
+    # total = to_float_seconds(a[6])
+    # print(user, system, cpu, total)
+    print(f"{cmd}: {total}")
+    return total
 
 def bench(implementation, x):
-    cmd = f"{implementation} {x}"
+    cmd = implementation + [str(x)]
     return run(cmd)
 
 def run_x(x):
@@ -70,7 +76,7 @@ def main():
     data = run_benchmarks()
     with open('testing/timing_data.csv', mode='w') as csv_file:
         writer = csv.writer(csv_file, delimiter=',')
-        writer.writerow(["n", "Go", "Rust"])
+        writer.writerow(["n", "Go dumb", "Go smart", "Rust dumb", "Rust smart"])
         for row in data:
             writer.writerow(row)
 

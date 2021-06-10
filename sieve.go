@@ -7,22 +7,41 @@ import (
 )
 
 func main() {
-	if len(os.Args) != 2 {
-		fmt.Println("Please enter exactly one argument, an integer limit",
+	if len(os.Args) < 2 {
+		fmt.Println("Please enter one or more arguments, an integer limit",
 					"to the size of the primes generated.")
 		return
 	}
 
-	n, err := strconv.Atoi(os.Args[1])
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(2)
+	smart := false
+	n := 0
+
+	for i := 1; i < len(os.Args); i++ {
+		if os.Args[i] == "-s" {
+			smart = true
+			continue
+		}
+		nTemp, err := strconv.Atoi(os.Args[1])
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(2)
+		}
+		n = nTemp
 	}
 
 	if n < 2 {
 		fmt.Println("The integer limit must be greater than or equal to two.")
+		os.Exit(2)
 	}
 
+	if smart {
+		smart_primes(n)
+	} else {
+		dumb_primes(n)
+	}
+}
+
+func dumb_primes(n int) {
 	var primes []int
 
 	for i := 2; i <= n; i++ {
@@ -38,6 +57,30 @@ func main() {
 	for i := 0; i < len(primes); i++ {
 		if primes[i] != 0 {
 			fmt.Println(primes[i])
+		}
+	}
+}
+
+func smart_primes(n int) {
+	primes := make([]bool, 0, n)
+
+	for i := 0; i <= n; i++ {
+		primes = append(primes, true)
+	}
+
+	for factor := 2; factor < n; factor++ {
+		if primes[factor] {
+			var multiple = 2
+			for factor * multiple < n {
+				primes[factor * multiple] = false;
+				multiple += 1;
+			}
+		}
+	}
+
+	for i := 0; i < len(primes); i++ {
+		if primes[i] {
+			fmt.Println(i)
 		}
 	}
 }
