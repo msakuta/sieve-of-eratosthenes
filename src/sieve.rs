@@ -30,7 +30,18 @@ fn main() {
     }
 }
 
-fn dumb_primes(n: usize, quiet: bool) {
+fn dumb_primes(n: usize, quiet: bool) -> Vec<usize> {
+    fn sieve(primes: &mut Vec<usize>, factor: usize) {
+        for i in 0..primes.len() {
+            let value = primes[i];
+            if value != 0 && value != factor {
+                if value % factor == 0 {
+                    primes[i] = 0;
+                }
+            }
+        }
+    }
+
     let mut primes: Vec<usize> = Vec::new();
 
     for i in 2..=n {
@@ -44,17 +55,22 @@ fn dumb_primes(n: usize, quiet: bool) {
         }
     }
 
+    let mut ret = vec![];
     for i in 0..primes.len() {
         if primes[i] != 0 {
             if !quiet {
                 println!("{}", primes[i])
             }
+            ret.push(primes[i]);
         }
     }
+    ret
 }
 
-fn smart_primes(n: usize, quiet: bool) {
+fn smart_primes(n: usize, quiet: bool) -> Vec<usize> {
     let mut primes = vec![true; n];
+    primes[0] = false;
+    primes[1] = false;
 
     for factor in 2..n {
         if primes[factor] {
@@ -66,22 +82,19 @@ fn smart_primes(n: usize, quiet: bool) {
         }
     }
 
+    let mut ret = vec![];
     for (i, b) in primes.iter().enumerate() {
         if *b {
             if !quiet {
                 println!("{}", i);
             }
+            ret.push(i);
         }
     }
+    ret
 }
 
-fn sieve(primes: &mut Vec<usize>, factor: usize) {
-    for i in 0..primes.len() {
-        let value = primes[i];
-        if value != 0 && value != factor {
-            if value % factor == 0 {
-                primes[i] = 0;
-            }
-        }
-    }
+#[test]
+fn test_sieves() {
+    assert_eq!(dumb_primes(10000, true), smart_primes(10000, true));
 }

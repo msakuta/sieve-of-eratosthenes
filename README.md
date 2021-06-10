@@ -21,7 +21,7 @@ cd sieve-of-eratosthenes
 # Build the go executable
 go build -o bin/sieve sieve.go
 # Build the Rust executable in 'release' profile
-rustc -C debuginfo=0 -C opt-level=3 sieve.rs -o bin/sieve-rs
+rustc -C debuginfo=0 -C opt-level=3 src/sieve.rs -o bin/sieve-rs
 ```
 
 The `rustc` flags build the Rust executable as if we had used Cargo and ran `cargo --release`. Without them, Rust will compile with debug information and without optimisations by default, which results in an implementation that's slower than Go.
