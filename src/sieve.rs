@@ -12,25 +12,35 @@ fn main() {
     let smart = args.iter().any(|arg| arg == "-s");
     let quiet = args.iter().any(|arg| arg == "-q");
 
-    let n: usize = args.iter().fold(None, |n, arg|
-        if n.is_none() {
-            arg.parse::<usize>().ok()
-        } else {
-            n
-        }).expect("No valid unsigned integer argument found");
+    let n: usize = args
+        .iter()
+        .fold(None, |n, arg| {
+            if n.is_none() {
+                arg.parse::<usize>().ok()
+            } else {
+                n
+            }
+        })
+        .expect("No valid unsigned integer argument found");
 
     if n < 2 {
         println!("The integer limit must be greater than or equal to two.")
     }
 
-    if smart {
-        smart_primes(n, quiet);
+    let primes = if smart {
+        smart_primes(n)
     } else {
-        dumb_primes(n, quiet);
+        dumb_primes(n)
+    };
+
+    if !quiet {
+        for prime in primes {
+            println!("{}", prime);
+        }
     }
 }
 
-fn dumb_primes(n: usize, quiet: bool) -> Vec<usize> {
+fn dumb_primes(n: usize) -> Vec<usize> {
     fn sieve(primes: &mut Vec<usize>, factor: usize) {
         for i in 0..primes.len() {
             let value = primes[i];
@@ -55,19 +65,13 @@ fn dumb_primes(n: usize, quiet: bool) -> Vec<usize> {
         }
     }
 
-    let mut ret = vec![];
-    for i in 0..primes.len() {
-        if primes[i] != 0 {
-            if !quiet {
-                println!("{}", primes[i])
-            }
-            ret.push(primes[i]);
-        }
-    }
-    ret
+    primes
+        .iter()
+        .filter_map(|b| if *b != 0 { Some(*b) } else { None })
+        .collect()
 }
 
-fn smart_primes(n: usize, quiet: bool) -> Vec<usize> {
+fn smart_primes(n: usize) -> Vec<usize> {
     let mut primes = vec![true; n];
     primes[0] = false;
     primes[1] = false;
@@ -82,19 +86,14 @@ fn smart_primes(n: usize, quiet: bool) -> Vec<usize> {
         }
     }
 
-    let mut ret = vec![];
-    for (i, b) in primes.iter().enumerate() {
-        if *b {
-            if !quiet {
-                println!("{}", i);
-            }
-            ret.push(i);
-        }
-    }
-    ret
+    primes
+        .iter()
+        .enumerate()
+        .filter_map(|(i, b)| if *b { Some(i) } else { None })
+        .collect()
 }
 
 #[test]
 fn test_sieves() {
-    assert_eq!(dumb_primes(10000, true), smart_primes(10000, true));
+    assert_eq!(dumb_primes(10000), smart_primes(10000));
 }
