@@ -1,15 +1,15 @@
 package main
 
 import (
-	"os"
 	"fmt"
+	"os"
 	"strconv"
 )
 
 func main() {
 	if len(os.Args) < 2 {
 		fmt.Println("Please enter one or more arguments, an integer limit",
-					"to the size of the primes generated.")
+			"to the size of the primes generated.")
 		return
 	}
 
@@ -69,17 +69,17 @@ func dumb_primes(n int, quiet bool) {
 }
 
 func smart_primes(n int, quiet bool) {
-	primes := make([]bool, 0, n)
+	primes := make([]bool, n)
 
-	for i := 0; i <= n; i++ {
-		primes = append(primes, true)
+	for i := 0; i < n; i++ {
+		primes[i] = true
 	}
 
 	for factor := 2; factor < n; factor++ {
 		if primes[factor] {
 			var multiple = 2
-			for factor * multiple < n {
-				primes[factor * multiple] = false
+			for factor*multiple < n {
+				primes[factor*multiple] = false
 				multiple += 1
 			}
 		}
@@ -95,9 +95,9 @@ func smart_primes(n int, quiet bool) {
 }
 
 func sieve(primes []int, factor int) {
-	for index, value := range(primes) {
+	for index, value := range primes {
 		if value != 0 && value != factor {
-			if value % factor == 0 {
+			if value%factor == 0 {
 				primes[index] = 0
 			}
 		}
