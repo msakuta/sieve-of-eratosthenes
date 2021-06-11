@@ -8,10 +8,12 @@ extension = ".exe" if os.name == "nt" else ""
 
 IMPLEMENTATIONS = [
     # "python sieve.py",
-    ["bin\\sieve" + extension, "-q"],
+    # ["bin\\sieve" + extension, "-q"],
     ["bin\\sieve" + extension, "-s", "-q"],
-    ["bin\\sieve-rs" + extension, "-q"],
+    ["bin\\sieve" + extension, "-s2", "-q"],
+    # ["bin\\sieve-rs" + extension, "-q"],
     ["bin\\sieve-rs" + extension, "-s", "-q"],
+    ["bin\\sieve-rs" + extension, "-s2", "-q"],
 ]
 
 MIN = int(os.getenv("MIN", 10000))
@@ -83,9 +85,9 @@ def main():
             writer.writerow(row)
     with open('testing/timing_data_smart.csv', mode='w') as csv_file:
         writer = csv.writer(csv_file, delimiter=',')
-        writer.writerow(["n", "Go smart", "Rust smart"])
+        writer.writerow(["n", "Go smart", "Go smart2", "Rust smart", "Rust smart2"])
         for row in data:
-            writer.writerow([num for i, num in enumerate(row) if i == 0 or "-s" in IMPLEMENTATIONS[i - 1]])
+            writer.writerow([num for i, num in enumerate(row) if i == 0 or "-s" in IMPLEMENTATIONS[i - 1] or "-s2" in IMPLEMENTATIONS[i - 1]])
 
 if __name__ == "__main__":
     main()

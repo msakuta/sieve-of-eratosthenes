@@ -10,6 +10,7 @@ fn main() {
     }
 
     let smart = args.iter().any(|arg| arg == "-s");
+    let smart2 = args.iter().any(|arg| arg == "-s2");
     let quiet = args.iter().any(|arg| arg == "-q");
 
     let n: usize = args
@@ -27,7 +28,9 @@ fn main() {
         println!("The integer limit must be greater than or equal to two.")
     }
 
-    let primes = if smart {
+    let primes = if smart2 {
+        smart_primes2(n)
+    } else if smart {
         smart_primes(n)
     } else {
         dumb_primes(n)
@@ -93,7 +96,35 @@ fn smart_primes(n: usize) -> Vec<usize> {
         .collect()
 }
 
+fn smart_primes2(n: usize) -> Vec<usize> {
+    let mut primes = vec![true; n];
+    primes[0] = false;
+    primes[1] = false;
+
+    for factor in 2..(n as f64).sqrt() as usize {
+        if primes[factor] {
+            let mut multiple = 2;
+            while factor * multiple < n {
+                primes[factor * multiple] = false;
+                multiple += 1;
+            }
+        }
+    }
+
+    primes
+        .iter()
+        .enumerate()
+        .filter_map(|(i, b)| if *b { Some(i) } else { None })
+        .collect()
+}
+
+
 #[test]
 fn test_sieves() {
     assert_eq!(dumb_primes(10000), smart_primes(10000));
+}
+
+#[test]
+fn test_sieves2() {
+    assert_eq!(dumb_primes(10000), smart_primes2(10000));
 }
