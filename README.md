@@ -1,8 +1,10 @@
 # How Fast is Golang? | Sieve of Eratosthenes
 
+See [this](dumb_and_smart_analysis.md) for the analysis on improvements made in this fork.
+
 This repository houses some code used to demonstrate the speed improvement of Rust over Golang, as featured in [this Medium article](https://medium.com/@alistairisrael/how-fast-is-rust-655f6dd90ff8).
 
-![Rust vs Go Linear Plot](img/rust_vs_go_linear.png?raw=true "Rust vs Go Linear Plot")
+![Rust vs Go Linear Plot](img/rust_vs_go_smart_linear.png?raw=true "Rust vs Go Linear Plot")
 
 ## Getting Started
 
