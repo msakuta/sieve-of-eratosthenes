@@ -11,6 +11,7 @@ IMPLEMENTATIONS = [
     {"title": "Go dumb", "cmd": ["bin/sieve" + extension, "-q"]},
     {"title": "Go smart", "cmd": ["bin/sieve" + extension, "-s", "-q"]},
     {"title": "Go smart2", "cmd": ["bin/sieve" + extension, "-s2", "-q"]},
+    {"title": "Go smart3", "cmd": ["bin/sieve" + extension, "-s3", "-q"]},
     {"title": "Rust dumb", "cmd": ["bin/sieve-rs" + extension, "-q"]},
     {"title": "Rust smart", "cmd": ["bin/sieve-rs" + extension, "-s", "-q"]},
     {"title": "Rust smart2", "cmd": ["bin/sieve-rs" + extension, "-s2", "-q"]},

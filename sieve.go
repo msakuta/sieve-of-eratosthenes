@@ -16,6 +16,7 @@ func main() {
 
 	smart := false
 	smart2 := false
+	smart3 := false
 	quiet := false
 	n := 0
 
@@ -26,6 +27,10 @@ func main() {
 		}
 		if os.Args[i] == "-s2" {
 			smart2 = true
+			continue
+		}
+		if os.Args[i] == "-s3" {
+			smart3 = true
 			continue
 		}
 		if os.Args[i] == "-q" {
@@ -45,7 +50,9 @@ func main() {
 		os.Exit(2)
 	}
 
-	if smart2 {
+	if smart3 {
+		smart_primes3(n, quiet)
+	} else if smart2 {
 		smart_primes2(n, quiet)
 	} else if smart {
 		smart_primes(n, quiet)
@@ -113,6 +120,33 @@ func smart_primes2(n int, quiet bool) {
 	for factor := 2; factor < slimit; factor++ {
 		if primes[factor] {
 			var multiple = 2
+			for factor*multiple < n {
+				primes[factor*multiple] = false
+				multiple += 1
+			}
+		}
+	}
+
+	for i := 0; i < len(primes); i++ {
+		if primes[i] {
+			if !quiet {
+				fmt.Println(i)
+			}
+		}
+	}
+}
+
+func smart_primes3(n int, quiet bool) {
+	primes := make([]bool, n)
+
+	for i := 0; i < n; i++ {
+		primes[i] = true
+	}
+
+	slimit := int(math.Sqrt(float64(n)))
+	for factor := 2; factor < slimit; factor++ {
+		if primes[factor] {
+			var multiple = factor
 			for factor*multiple < n {
 				primes[factor*multiple] = false
 				multiple += 1
