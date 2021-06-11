@@ -84,11 +84,11 @@ def main():
     else:
         fil = lambda x: True
     data = run_benchmarks(fil)
-    with open('testing/timing_data_smart.csv', mode='w') as csv_file:
+    with open(f'testing/timing_data{"_smart" if SMART_ONLY else ""}.csv', mode='w') as csv_file:
         writer = csv.writer(csv_file, delimiter=',')
         writer.writerow(["n"] + [entry["title"] for entry in IMPLEMENTATIONS if fil(entry)])
         for row in data:
-            writer.writerow([num for i, num in enumerate(row) if i == 0])
+            writer.writerow(row)
 
 if __name__ == "__main__":
     main()
