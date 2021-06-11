@@ -8,16 +8,18 @@ extension = ".exe" if os.name == "nt" else ""
 
 IMPLEMENTATIONS = [
     # "python sieve.py",
-    # ["bin\\sieve" + extension, "-q"],
-    ["bin\\sieve" + extension, "-s", "-q"],
-    ["bin\\sieve" + extension, "-s2", "-q"],
-    # ["bin\\sieve-rs" + extension, "-q"],
-    ["bin\\sieve-rs" + extension, "-s", "-q"],
-    ["bin\\sieve-rs" + extension, "-s2", "-q"],
+    {"title": "Go dumb", "cmd": ["bin/sieve" + extension, "-q"]},
+    {"title": "Go smart", "cmd": ["bin/sieve" + extension, "-s", "-q"]},
+    {"title": "Go smart2", "cmd": ["bin/sieve" + extension, "-s2", "-q"]},
+    {"title": "Rust dumb", "cmd": ["bin/sieve-rs" + extension, "-q"]},
+    {"title": "Rust smart", "cmd": ["bin/sieve-rs" + extension, "-s", "-q"]},
+    {"title": "Rust smart2", "cmd": ["bin/sieve-rs" + extension, "-s2", "-q"]},
+    {"title": "Rust smart3", "cmd": ["bin/sieve-rs" + extension, "-s3", "-q"]},
 ]
 
 MIN = int(os.getenv("MIN", 10000))
 MAX = int(os.getenv("MAX", 1000000))
+SMART_ONLY = int(os.getenv("SMART_ONLY", "1")) != 0
 
 def x_axis():
     min_exp = int(math.log10(MIN))
@@ -70,24 +72,23 @@ def bench(implementation, x):
     cmd = implementation + [str(x)]
     return run(cmd)
 
-def run_x(x):
-    return [x] + list(map(lambda implementation: bench(implementation, x), IMPLEMENTATIONS))
+def run_x(x, fil):
+    return [x] + list(map(lambda implementation: bench(implementation["cmd"], x), filter(fil, IMPLEMENTATIONS)))
 
-def run_benchmarks():
-    return list(map(run_x, x_axis()))
+def run_benchmarks(fil):
+    return list(map(lambda x: run_x(x, fil), x_axis()))
 
 def main():
-    data = run_benchmarks()
-    with open('testing/timing_data.csv', mode='w') as csv_file:
-        writer = csv.writer(csv_file, delimiter=',')
-        writer.writerow(["n", "Go dumb", "Go smart", "Rust dumb", "Rust smart"])
-        for row in data:
-            writer.writerow(row)
+    if SMART_ONLY:
+        fil = lambda x: 0 <= x["title"].find("smart")
+    else:
+        fil = lambda x: True
+    data = run_benchmarks(fil)
     with open('testing/timing_data_smart.csv', mode='w') as csv_file:
         writer = csv.writer(csv_file, delimiter=',')
-        writer.writerow(["n", "Go smart", "Go smart2", "Rust smart", "Rust smart2"])
+        writer.writerow(["n"] + [entry["title"] for entry in IMPLEMENTATIONS if fil(entry)])
         for row in data:
-            writer.writerow([num for i, num in enumerate(row) if i == 0 or "-s" in IMPLEMENTATIONS[i - 1] or "-s2" in IMPLEMENTATIONS[i - 1]])
+            writer.writerow([num for i, num in enumerate(row) if i == 0])
 
 if __name__ == "__main__":
     main()
